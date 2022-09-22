@@ -1,0 +1,20 @@
+<script>
+   const nextBtnEl = document.querySelector('.read-next-post');
+   nextBtnEl.style.display = 'none'; // Start hidden
+
+   if (nextBtnEl) {
+      // Get next post
+      const currPost = document.querySelector('#posts-list .w--current');
+      const nextPost = currPost.closest('.w-dyn-item').nextSibling;
+      const postName = nextPost.querySelector('a div').textContent;
+      const postLink = nextPost.querySelector('a').getAttribute('href');
+
+      if (postLink && postName) {
+         // Create & display Next button
+         const nextBtn = document.createElement('span');
+         nextBtn.innerHTML = `Read Next <a class="nextLink" href="${postLink}">${postName} `;
+         nextBtnEl.prepend(nextBtn);
+         nextBtnEl.style.display = '';
+      }
+   }
+</script>
