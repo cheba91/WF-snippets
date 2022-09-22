@@ -1,0 +1,17 @@
+<script src="https://cdn.jsdelivr.net/npm/@finsweet/cms-library@1/cms-library.js"></script>
+<script>
+   (() => {
+      const fsMagic = new FsLibrary('.blog-posts-list');
+
+      fsMagic.loadmore({
+         button: '.load-more-button',
+         resetIx: true,
+         animation: {
+            enable: true,
+            duration: 0.3,
+            easing: 'ease',
+            effects: 'fade',
+         },
+      });
+   })();
+</script>
