@@ -1,0 +1,21 @@
+<script>
+   // Append categories bar in main nav
+   const cats = document.querySelector('.categories-bar');
+   const nav = document.querySelector('.top-nav');
+   const navWrap = document.querySelector('.nav-wrapper');
+   const logo = document.querySelector('.logo-set-color');
+   cats.style.marginTop = '0';
+   nav.appendChild(cats);
+
+   // Set alt color of logo && white BG
+   logo.style.color = '#465561';
+   navWrap.style.background = '#fff';
+   document.addEventListener('scroll', () => {
+      if (window.pageYOffset === 0) {
+         setTimeout(() => {
+            logo.style.color = '#465561';
+            navWrap.style.background = '#fff';
+         }, 100);
+      }
+   });
+</script>
