@@ -1,0 +1,56 @@
+<style>
+   #map {
+      min-height: 400px;
+      width: 100%;
+   }
+</style>
+<div id="map"></div>
+<script>
+  const allLocations = [
+            [53.3325959, 3.9775099],
+            [33.384983, -93.74377],
+           
+         ];
+
+         mapboxgl.accessToken = '';
+         const map = new mapboxgl.Map({
+            container: 'map',
+            // style: 'mapbox://styles/mapbox/dark-v10',
+            style: 'mapbox://styles/cheba/cl8mxvwx2009z14lj75h3apb9',
+            zoom: 1.2,
+            center: [10.8044914, 45.6106999],
+            scrollZoom: false,
+         });
+
+         // Add markers
+         map.on('load', () => {
+            allLocations.forEach((location) => {
+               const marker = new mapboxgl.Marker({
+                  color: '#00a7e1',
+                  scale: 0.7,
+               })
+                  .setLngLat([location[1], location[0]])
+                  .addTo(map);
+            });
+         });
+
+         // Zoom to location on click
+         const tabs = document.querySelector('.locations-wrap');
+         if (tabs) {
+            tabs.addEventListener('click', (e) => {
+               const clickedEl = e.target.closest('.location-single');
+
+               if (clickedEl) {
+                  const coordinates = clickedEl.getAttribute('coordinates');
+                  if (coordinates.length > 4) {
+                     const zoomTo = coordinates.split(',');
+                     map.flyTo({
+                        center: [Number(zoomTo[1]), Number(zoomTo[0])],
+                        zoom: 11,
+                        // speed: 1,
+                     });
+                  } else console.log('no coordinates');
+               } else console.log('no clickedEl');
+            });
+         } else console.log('no tabs');
+</script>
