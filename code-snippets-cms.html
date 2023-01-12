@@ -1,0 +1,52 @@
+<script>
+  // Allowing to use <code>//code here</code> in CMS's rich text editor
+  let elIndex = false;
+   let elEndIndex = false;
+   const wrapSnippets = () => {
+      if (elIndex > 0 && elEndIndex > 0) {
+         const codeSnippet = document.createElement('pre');
+         codeSnippet.classList.add('code-snippet-container');
+         const codeSnippetHtml = Array.from(blogBody.children)
+            .slice(elIndex, elEndIndex + 1)
+            .map((el) => {
+               if (
+                  !el.innerHTML.includes('&lt;code&gt;') &&
+                  !el.innerHTML.includes('&lt;/code&gt;')
+               ) {
+                  return el.innerHTML;
+               }
+            })
+            .join('\n');
+         codeSnippet.innerHTML = codeSnippetHtml;
+         Array.from(blogBody.children)
+            .slice(elIndex, elEndIndex + 1)
+            .forEach((el) => el.remove());
+         blogBody.children[elIndex].insertAdjacentElement(
+            'afterend',
+            codeSnippet
+         );
+
+         elIndex = false;
+         elEndIndex = false;
+      }
+   };
+   const blogBody = document.querySelector('.blog-template__body');
+   document.querySelectorAll('.blog-template__body p').forEach((el) => {
+      // <code> tag
+      if (el.innerHTML.includes('&lt;code&gt;')) {
+         elIndex = Array.from(blogBody.children).indexOf(el);
+         console.log(elIndex, elEndIndex);
+         // </code> tag
+      } else if (el.innerHTML.includes('&lt;/code&gt;')) {
+         elEndIndex = Array.from(blogBody.children).indexOf(el);
+         console.log(elIndex, elEndIndex);
+      }
+      wrapSnippets();
+   });
+   EnlighterJS.init('pre', 'code', {
+      theme: 'bootstrap4  ',
+      language: 'javascript',
+      toolbarTop: '{BTN_RAW}{BTN_COPY}{BTN_WINDOW}',
+      toolbarBottom: '',
+   });
+</script>
