@@ -1,0 +1,13 @@
+<script>
+  const ctaSection = document.querySelector('.cta-section');
+  const shouldDisplay = document.querySelector('.should-display');
+
+  const ctaClone = ctaSection ? ctaSection.cloneNode(true) : null;
+  document.querySelectorAll('.post-content p').forEach((el) => {
+    console.log(el.innerHTML);
+    if (ctaClone && el.innerHTML.includes('&lt;cta-shortcode&gt')) {
+      el.outerHTML = ctaClone.outerHTML;
+    }
+  });
+  if (shouldDisplay.textContent !== '') ctaSection.classList.add('hidden');
+</script>
