@@ -1,13 +1,23 @@
 <script>
-  const ctaSection = document.querySelector('.cta-section');
-  const shouldDisplay = document.querySelector('.should-display');
+  /*
+    1. Create some CTA template element and hide it
+    2. add <cta-section> in blog content
+    3. add some element that will hold the condition to display the CTA
+  */
+  document.addEventListener('DOMContentLoaded', () => {
+    const ctaSection = document.querySelector('.el-to-clone'); // Element to clone
+    const shouldDisplay = document.querySelector('.should-display'); // Some condition if you want to display the CTA
 
-  const ctaClone = ctaSection ? ctaSection.cloneNode(true) : null;
-  document.querySelectorAll('.post-content p').forEach((el) => {
-    console.log(el.innerHTML);
-    if (ctaClone && el.innerHTML.includes('&lt;cta-shortcode&gt')) {
-      el.outerHTML = ctaClone.outerHTML;
-    }
+    const ctaClone = ctaSection ? ctaSection.cloneNode(true) : null;
+    document.querySelectorAll('.post-text p').forEach((el) => {
+      if (el.innerHTML.includes('&lt;cta-section&gt')) {
+        if (ctaClone && shouldDisplay.textContent !== '') {
+          ctaClone.classList.remove('hidden');
+          el.outerHTML = ctaClone.outerHTML;
+        } else {
+          el.outerHTML = '';
+        }
+      }
+    });
   });
-  if (shouldDisplay.textContent !== '') ctaSection.classList.add('hidden');
 </script>
