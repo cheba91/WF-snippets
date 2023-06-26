@@ -1,1 +1,1 @@
-addEventListener('DOMContentLoaded', () => $('#calculator-form').submit(() => false));
+addEventListener('DOMContentLoaded', () => $('#some-form').submit(() => false));
