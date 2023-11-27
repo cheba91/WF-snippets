@@ -1,0 +1,45 @@
+<script>
+  window.addEventListener('load', () => {
+    const transitionSpeed = 5000;
+    const tabsWrap = document.querySelector('.tabs.w-tabs');
+    const tabs = document.querySelectorAll('.tabs__menu .tabs__link');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', (e) => {
+        if (tab.id === 'tab-0') {
+        } else if (tab.id === 'tab-1') {
+        }
+      });
+    });
+
+    const handleIntersection = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const intersectionRatio = entry.intersectionRatio;
+          if (intersectionRatio >= 0.4) {
+            clickTabsOneByOne();
+            observer.disconnect();
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.4,
+    });
+    observer.observe(tabsWrap);
+
+    const clickTabsOneByOne = () => {
+      tabs[0].click();
+      let index = 1;
+      const intervalId = setInterval(() => {
+        if (index < tabs.length) {
+          tabs[index].click();
+          index++;
+        } else {
+          clearInterval(intervalId);
+        }
+      }, transitionSpeed);
+    };
+  });
+</script>
