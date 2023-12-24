@@ -1,0 +1,72 @@
+<!-- Tabs with links as swiper, centered, loop, center on click, autoplay -->
+<style>
+  .tabs__link.swiper-slide {
+    height: unset !important;
+    display: flex !important;
+  }
+  .container.is--swiper.w-container:before,
+  .container.is--swiper.w-container:after,
+  .tabs__wrap .w-tabs:before,
+  .tabs__wrap .w-tabs:after {
+    display: none !important;
+  }
+</style>
+<script>
+  window.addEventListener('load', () => {
+    //---------------------------------
+
+    const moveSlide = (direction) => (direction === 'next' ? swiper.slideNext(500, false) : swiper.slidePrev(500, false));
+
+    const startingSlide = 4;
+    let currentSlideIndex = startingSlide;
+    const swiper = new Swiper('.tabs', {
+      loop: true,
+      speed: 500,
+      slidesPerView: 'auto',
+      spaceBetween: 0,
+      loopPreventsSliding: false,
+    });
+
+    const slides = document.querySelectorAll('.tabs__link.swiper-slide');
+    slides.forEach((slide, i) => {
+      slide.addEventListener('click', (e) => {
+        const slideIndexStr = slide.dataset.swiperSlideIndex;
+        if (slideIndexStr) {
+          let slideTo, stepsToSlide, direction;
+          const clickedSlideIndex = Number(slideIndexStr);
+          const totalSlides = slides.length;
+
+          if (clickedSlideIndex - startingSlide >= 0) slideTo = clickedSlideIndex - startingSlide;
+          else slideTo = clickedSlideIndex - startingSlide + totalSlides;
+
+          if (currentSlideIndex - slideTo > 0) {
+            stepsToSlide = currentSlideIndex - slideTo;
+            direction = 'prev';
+          } else {
+            stepsToSlide = slideTo - currentSlideIndex;
+            direction = 'next';
+          }
+          // Reverse if closer
+          if (stepsToSlide > totalSlides / 2) {
+            stepsToSlide = totalSlides - stepsToSlide;
+            direction = direction === 'next' ? 'prev' : 'next';
+          }
+
+          for (let i = 0; i < Math.abs(stepsToSlide); i++) {
+            setTimeout(() => moveSlide(direction), 50);
+          }
+        }
+      });
+    });
+    swiper.on('slideChange', () => (currentSlideIndex = swiper.realIndex ? swiper.realIndex : startingSlide - startingSlide));
+
+    // Autoplay
+    let hasInteracted = false;
+    setInterval(() => {
+      if (!hasInteracted) document.querySelector('.tabs__link.w--current').nextElementSibling.click();
+    }, 6000);
+    swiper.on('touchStart', () => (hasInteracted = true));
+
+    //---------------------------------
+  });
+</script>
