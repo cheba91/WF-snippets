@@ -21,3 +21,22 @@
     });
   });
 </script>
+<script>
+  // Add them directly from CMS collection
+  document.addEventListener('DOMContentLoaded', () => {
+    const blogParagraphs = document.querySelectorAll('.blog__richtext p');
+    const shortcodeCtas = document.querySelectorAll('.blog__cta');
+
+    shortcodeCtas.forEach((shortcodeCta) => {
+      const shortcode = shortcodeCta?.id;
+      if (!shortcode) return;
+
+      blogParagraphs.forEach((p) => {
+        if (p.innerHTML.includes(`&lt;${shortcode}&gt`)) {
+          const ctaClone = shortcodeCta.cloneNode(true);
+          p.outerHTML = ctaClone.outerHTML;
+        }
+      });
+    });
+  });
+</script>
