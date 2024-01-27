@@ -1,0 +1,15 @@
+<script>
+  // Unwrap nested collection, eg. if nested with Finsweet nest
+  const unwrapCollection = () => {
+    [
+      ...document.querySelectorAll('.blog__categories .collection'),
+      ...document.querySelectorAll('.blog__categories .collection__list'),
+      ...document.querySelectorAll('.blog__categories [role=listitem]'),
+    ].forEach((el) => el.replaceWith(...el.childNodes));
+  };
+  const collections = document.querySelectorAll('.blog__categories');
+  collections.forEach((el) => {
+    const observer = new MutationObserver(unwrapCollection);
+    observer.observe(el, { childList: true });
+  });
+</script>
