@@ -1,0 +1,73 @@
+<script>
+  /* 
+    Use inside CMS items with slug set as item ID
+    Display countdown timer, add to calendar, join with Zoom, show "Live Now" if the event is ongoing, show "COMPLETED" if the event is over
+    */
+  window.addEventListener('load', () => {
+    (() => {
+      const dateString = document.querySelector('#cms-item-id .date-string'); // From CMS
+
+      if (dateString) {
+        // Add to calendar
+        const pad = (number) => (number < 10 ? '0' : '') + number;
+        const dateObject = new Date(Date.parse(`${dateString.textContent} GMT+1`));
+
+        dateObject.setHours(dateObject.getHours() + 4);
+
+        const year = dateObject.getFullYear();
+        const month = dateObject.getMonth() + 1;
+        const day = dateObject.getDate();
+        const hours = dateObject.getHours();
+        const minutes = dateObject.getMinutes();
+
+        const formattedDate = year + '-' + pad(month) + '-' + pad(day);
+        const formattedTime = pad(hours) + ':' + pad(minutes);
+
+        // Countdown
+        const countDownDate = dateObject.getTime();
+
+        const x = setInterval(() => {
+          const now = new Date().getTime() + 4 * 60 * 60 * 1000;
+          const distance = countDownDate - now;
+          const minutesLeftToStart = Math.floor(distance / (1000 * 60)) + 1;
+          //console.log(now, dateObject, distance, minutesLeftToStart);
+          // Check if the current time is within the event duration
+
+          const eventDurationInMin = 120; // Fixed here, can be dynamic from CMS
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000); // If needed
+
+          const displayString = `${days}D : ${hours}H : ${minutes}M`;
+
+          const displayEl = document.querySelector('#cms-item-id .webinar__counter-time'); // Countdown display element
+          const addEventBtn = document.querySelector('#cms-item-id .add-event'); // Add to calendar button "AddEvent"
+          const zoomBtn = document.querySelector('#cms-item-id .event-zoom-btn'); // Join with Zoom button
+          const livePulsingDot = document.querySelector('#cms-item-id .live-dot'); // Live pulsing dot
+
+          // If the event is still ongoing, show "Live Now"
+          if (distance < 0 && Math.abs(minutesLeftToStart) < eventDurationInMin) {
+            if (displayEl) displayEl.textContent = 'Live now';
+            zoomBtn.classList.remove('inactive');
+            addEventBtn.classList.add('inactive');
+            livePulsingDot.classList.remove('inactive');
+          } else if (distance < 0) {
+            // If the event is over, show "COMPLETED"
+            if (displayEl) displayEl.textContent = 'COMPLETED';
+            zoomBtn.classList.add('inactive');
+            addEventBtn.classList.add('inactive');
+            livePulsingDot.classList.add('inactive');
+          } else {
+            // If the event is not yet started, show the countdown
+            if (displayEl) displayEl.textContent = displayString;
+            zoomBtn.classList.add('inactive');
+            addEventBtn.classList.remove('inactive');
+            livePulsingDot.classList.add('inactive');
+          }
+        }, 1000);
+      }
+    })();
+  });
+</script>
