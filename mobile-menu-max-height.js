@@ -3,7 +3,7 @@
     if (window.innerWidth < 992) {
       const nav = document.querySelector('.nav');
       const navMenu = document.querySelector('.nav__menu');
-      const setMaxHeight = () => nav && navMenu && (navMenu.style.maxHeight = `${window.outerHeight - nav.offsetHeight}px`);
+      const setMaxHeight = () => nav && navMenu && (navMenu.style.maxHeight = `${window.innerHeight - nav.offsetHeight}px`);
       setMaxHeight();
       window.addEventListener('resize', setMaxHeight);
     }
