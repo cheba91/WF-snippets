@@ -1,0 +1,16 @@
+<div id="svg-container"></div>
+<script>
+  const loadSVGFromFile = (filePath) => {
+    fetch(filePath)
+      .then((response) => response.text())
+      .then((svgText) => {
+        const parser = new DOMParser();
+        const svgDocument = parser.parseFromString(svgText, 'image/svg+xml');
+        const svgElement = svgDocument.documentElement;
+        const svgContainer = document.getElementById('svg-container');
+        svgContainer.appendChild(svgElement);
+      })
+      .catch((error) => console.error('Error loading SVG:', error));
+  };
+  loadSVGFromFile('');
+  </script>
