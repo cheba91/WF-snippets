@@ -1,0 +1,12 @@
+<!-- Output webinar duration in a CMS collection -->
+<div class="text--14 text--gray">
+  <script>
+    (() => {
+      const durationInMinutes = 125; // CMS value
+      const durationInHours = Math.floor(durationInMinutes / 60);
+      const durationInMinutesRemainder = durationInMinutes % 60;
+      const duration = durationInHours > 0 ? `${durationInHours} hr ${durationInMinutesRemainder} min` : `${durationInMinutesRemainder} min`;
+      document.write(duration);
+    })();
+  </script>
+</div>
