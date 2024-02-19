@@ -1,0 +1,32 @@
+<!-- Output webinar duration in a CMS collection -->
+<div class="text--14 text--gray">
+  <script>
+    (() => {
+      const durationInMinutes = 125; // CMS value
+      const durationInHours = Math.floor(durationInMinutes / 60);
+      const durationInMinutesRemainder = durationInMinutes % 60;
+      const duration = durationInHours > 0 ? `${durationInHours} hr ${durationInMinutesRemainder} min` : `${durationInMinutesRemainder} min`;
+      document.write(duration);
+    })();
+  </script>
+</div>
+
+<!-- Calc read time -->
+<script>
+  const getReadTime = (text) => {
+    const wordsPerMinute = 200;
+    const numberOfWords = text.split(/\s/g).length;
+    return Math.ceil(numberOfWords / wordsPerMinute);
+  };
+</script>
+<!-- Shorten title to nr of rows -->
+<script>
+  const shortenTitle = (title, maxLines) => {
+    const lineHeight = parseInt(window.getComputedStyle(title).lineHeight, 10);
+    const maxHeight = lineHeight * maxLines;
+
+    while (title.scrollHeight > maxHeight) {
+      title.textContent = title.textContent.replace(/\W*\s(\S)*$/, '...');
+    }
+  };
+</script>
