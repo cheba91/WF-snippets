@@ -22,7 +22,7 @@
 <!-- Shorten title to nr of rows -->
 <script>
   const shortenTitle = (titleEl, maxLines) => {
-    const lineHeight = parseInt(window.getComputedStyle(title).lineHeight, 10);
+    const lineHeight = parseInt(window.getComputedStyle(titleEl).lineHeight, 10);
     const maxHeight = lineHeight * maxLines;
 
     while (titleEl.scrollHeight > maxHeight) {
