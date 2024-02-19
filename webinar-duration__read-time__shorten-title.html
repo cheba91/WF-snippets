@@ -21,12 +21,12 @@
 </script>
 <!-- Shorten title to nr of rows -->
 <script>
-  const shortenTitle = (title, maxLines) => {
+  const shortenTitle = (titleEl, maxLines) => {
     const lineHeight = parseInt(window.getComputedStyle(title).lineHeight, 10);
     const maxHeight = lineHeight * maxLines;
 
-    while (title.scrollHeight > maxHeight) {
-      title.textContent = title.textContent.replace(/\W*\s(\S)*$/, '...');
+    while (titleEl.scrollHeight > maxHeight) {
+      titleEl.textContent = titleEl.textContent.replace(/\W*\s(\S)*$/, '...');
     }
   };
 </script>
