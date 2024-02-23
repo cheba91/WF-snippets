@@ -1,15 +1,23 @@
 <script>
   // Only one accordion open at a time with WF animations
   document.addEventListener('DOMContentLoaded', () => {
-    const accordionWrapSelector = '.prebuilt__right';
+    const accordionWrapSelector = '.accordions';
     const accordionTriggerSelector = '.accordion__head';
+    const activeClass = 'is--active';
+
     document.querySelectorAll(`${accordionWrapSelector} ${accordionTriggerSelector}`).forEach((accordionHead) => {
-      accordionHead.addEventListener('click', () => {
-        document.querySelectorAll(`${accordionWrapSelector} ${accordionTriggerSelector}.is--active`).forEach((activeHead) => {
-          activeHead.click();
-          activeHead.classList.remove('is--active');
-        });
-        accordionHead.classList.add('is--active');
+      accordionHead.addEventListener('click', (e) => {
+        if (e.isTrusted) {
+          // Handle the clicked accordion
+          accordionHead.classList.toggle(activeClass);
+          // Handle other accordions
+          document.querySelectorAll(`${accordionWrapSelector} ${accordionTriggerSelector}.${activeClass}`).forEach((activeHead) => {
+            if (activeHead !== accordionHead) {
+              activeHead.click();
+              activeHead.classList.remove(activeClass);
+            }
+          });
+        }
       });
     });
   });
