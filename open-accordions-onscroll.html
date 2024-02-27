@@ -1,0 +1,82 @@
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    //-------------------------------------
+    const tabEnd = document.querySelector('.scroll-accordions.is--end');
+    const tabManaged = document.querySelector('.scroll-accordions.is--managed');
+    const tabSwitched = document.querySelectorAll('.scroll-accordions-switches .button-outlined');
+    const accordionHeads = document.querySelectorAll('.scroll-accordions .accordion .accordion__head');
+
+    let currSegment;
+    const scrollWrap = document.querySelector('.scroll-wrap');
+    let currentAccordionHeads = document.querySelectorAll('.scroll-accordions.show .accordion .accordion__head');
+    // Switch tabs
+    tabSwitched.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const btnId = btn.id;
+        if (btnId === 'end') {
+          tabEnd.classList.add('show');
+          tabManaged.classList.remove('show');
+          btn.classList.add('is--active');
+          tabSwitched.forEach((otherBtn) => otherBtn !== btn && otherBtn.classList.remove('is--active'));
+          setTimeout(() => {
+            tabEnd.classList.add('fade');
+            tabManaged.classList.remove('fade');
+          }, 50);
+        } else if (btnId === 'managed') {
+          tabEnd.classList.remove('show');
+          tabManaged.classList.add('show');
+          btn.classList.add('is--active');
+          tabSwitched.forEach((otherBtn) => otherBtn !== btn && otherBtn.classList.remove('is--active'));
+          setTimeout(() => {
+            tabEnd.classList.remove('fade');
+            tabManaged.classList.add('fade');
+          }, 50);
+        }
+        currentAccordionHeads = document.querySelectorAll('.scroll-accordions.show .accordion .accordion__head');
+        document.querySelector('#services').scrollIntoView({
+          //   behavior: 'smooth',
+          block: 'start',
+          duration: 50,
+        });
+      });
+    });
+    //-------------------------------------
+    // Only have one accordion active at a time
+    accordionHeads.forEach((accordionHead) => {
+      accordionHead.addEventListener('click', (e) => {
+        console.log('Is trusted: ', e.isTrusted);
+        if (e.isTrusted) {
+          e.preventDefault();
+          e.stopPropagation();
+        } else {
+          document.querySelectorAll('.scroll-accordions .accordion .accordion__head.is--active').forEach((activeHead) => {
+            console.log('Active head: ', activeHead, 'Accordion head: ', accordionHead);
+            activeHead.click();
+            activeHead.classList.remove('is--active');
+          });
+          accordionHead.classList.add('is--active');
+        }
+      });
+    });
+
+    // Scrolling animation
+    const scrollWrapHeight = scrollWrap.offsetHeight;
+    const totalInnerHeight = scrollWrapHeight;
+    const segmentHeight = totalInnerHeight / currentAccordionHeads.length;
+    const handleScrollProgress = () => {
+      const scrollTop = window.scrollY;
+      const adjustedScrollTop = scrollTop - scrollWrapHeight * 0.2;
+      const segmentIndex = Math.floor(adjustedScrollTop / segmentHeight);
+
+      if (segmentIndex !== currSegment && segmentIndex >= 0 && segmentIndex < currentAccordionHeads.length) {
+        currSegment = segmentIndex;
+        currentAccordionHeads[segmentIndex].click();
+        console.log('Trigger segment ' + segmentIndex);
+      }
+    };
+
+    window.addEventListener('scroll', handleScrollProgress);
+
+    //-------------------------------------
+  });
+</script>
