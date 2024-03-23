@@ -1,3 +1,11 @@
+<style>
+  /* Hover state  when not active*/
+  @media screen and (min-width: 992px) {
+    .accordion:not(:has(.accordion__head.is--active)):hover {
+      background-color: #2c2c2d !important;
+    }
+  }
+</style>
 <script>
   // Only one accordion open at a time with WF animations
   document.addEventListener('DOMContentLoaded', () => {
