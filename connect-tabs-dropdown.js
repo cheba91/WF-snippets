@@ -39,3 +39,52 @@
     });
     //----------------------------------------------
   });
+
+ /*
+
+    Add on all pages, eg. footer
+    Used to scroll to tabs on page with tabs or save tab id to local storage
+
+  */
+  document.addEventListener('DOMContentLoaded', () => {
+    //----------------------------------------------
+    const pathname = window.location.pathname;
+    document.querySelectorAll('.footer-link.is--tab').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        const tabId = el.getAttribute('tab-id');
+        if (pathname === '/') {
+          // If it's page with tabs
+          e.preventDefault();
+          e.stopPropagation();
+          document.querySelector(`.tab__menu__link__text[data-name="${tabId}"]`)?.click();
+          setTimeout(() => document.querySelector('#tabs-anchor')?.scrollIntoView({ behavior: 'smooth' }), 10);
+        } else {
+          // Save to local storage
+          localStorage.setItem('tab-id', tab - id);
+        }
+      });
+    });
+    //----------------------------------------------
+  });
+
+  /*
+
+    Add on tabs page
+    Interval is used because of Finsweet tabs and need to wait for them to populate
+
+  */
+  document.addEventListener('DOMContentLoaded', () => {
+    //----------------------------------------------
+    const tabId = localStorage.getItem('tab-id');
+    if (tabId) {
+      const tabInterval = setInterval(() => {
+        const isTabsPopulated = document.querySelectorAll('.tab__menu__link')?.length;
+        if (isTabsPopulated) {
+          document.querySelector(`.tab__menu__link__text[data-name="${tabId}"]`)?.click();
+          clearInterval(tabInterval);
+          localStorage.removeItem('tab-id');
+        }
+      }, 100);
+    }
+    //----------------------------------------------
+  });
