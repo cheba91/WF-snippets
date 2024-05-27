@@ -1,0 +1,21 @@
+<div class="js--map-container"></div>
+<style>
+  .js--map-container {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .js--map-container iframe {
+    width: 100% !important;
+  }
+</style>
+<script>
+  window.addEventListener('load', () => {
+    const mapEmbed = '<cms-reference>';
+    if (mapEmbed !== '') {
+      const mapContainer = document.querySelector('.js--map-container');
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = mapEmbed;
+      mapContainer.innerHTML = tempElement.innerText;
+    }
+  });
+</script>
