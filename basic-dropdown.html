@@ -1,0 +1,23 @@
+<style>
+  .dropdown .dropdown__toggle.w--open img {
+    transform: rotate(180deg);
+  }
+</style>
+<script>
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.dropdown__list').forEach(function (list) {
+      list.addEventListener('click', function (e) {
+        if (!e.target.classList.contains('dropdown__list__item')) return;
+        // If we need to fill an input
+        // const inputWrapper = this.closest('.form__input-outer-v2');
+        // const inputToFill = inputWrapper.querySelector('.form__input-v2.is--hidden');
+        // const toggleText = inputWrapper.querySelector('.form__label-v2.is--dropdown');
+        // inputToFill && (inputToFill.value = e.target.textContent);
+        const toggleText = this.closest('.dropdown').querySelector('.dropdown__toggle .dropdown__toggle__text');
+        toggleText && (toggleText.textContent = e.target.textContent);
+        // toggleText && toggleText.classList.add('is--selected');
+        $('.form__input-v2.form__dropdown-wrap').trigger('w-close');
+      });
+    });
+  });
+</script>
