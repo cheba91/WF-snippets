@@ -1,11 +1,6 @@
 <script>
   window.addEventListener('load', () => {
-    const tableJsonStr = '{{wf {&quot;path&quot;:&quot;performance-table---plain-text&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}';
-    const tableDate =
-      '{{wf {&quot;path&quot;:&quot;data-date&quot;,&quot;transformers&quot;:[{&quot;name&quot;:&quot;date&quot;,&quot;arguments&quot;:[&quot;MMM DD, YYYY&quot;]\}],&quot;type&quot;:&quot;Date&quot;\} }}';
-
-    const table = document.querySelector('#index-table');
-    
+   
     window.fsAttributes = window.fsAttributes || [];
     window.fsAttributes.push([
       'cmsfilter',
