@@ -1,4 +1,7 @@
 <style>
+  .dropdown .dropdown__toggle img {
+    transition: all .3s;
+  }
   .dropdown .dropdown__toggle.w--open img {
     transform: rotate(180deg);
   }
@@ -16,7 +19,7 @@
         const toggleText = this.closest('.dropdown').querySelector('.dropdown__toggle .dropdown__toggle__text');
         toggleText && (toggleText.textContent = e.target.textContent);
         // toggleText && toggleText.classList.add('is--selected');
-        $('.form__input-v2.form__dropdown-wrap').trigger('w-close');
+        $('.dropdown').trigger('w-close');
       });
     });
   });
