@@ -1,0 +1,94 @@
+<script>
+  window.addEventListener('load', () => {
+    const activeUnderlineSelector = '.tabs__line';
+    const allLinksSelector = '.tabs__link';
+
+    const activeUnderlineEl = document.querySelector(activeUnderlineSelector);
+    const currentLink = document.querySelector(`${allLinksSelector}.w--current`);
+    const allLinks = document.querySelectorAll(allLinksSelector);
+    let activeLineLeft = 0;
+    let currentLinkCenter = false;
+
+    if (activeUnderlineEl && allLinks.length) {
+      if (currentLink) {
+        const currentElementWidth = currentLink.offsetWidth;
+        const currentElementLeftOffset = currentLink.offsetLeft;
+        const currentElementCenter = currentElementLeftOffset + currentElementWidth / 2;
+        activeLineLeft = currentElementCenter - activeUnderlineEl.offsetWidth / 2;
+        activeUnderlineEl.style.left = currentLinkCenter = `${activeLineLeft}px`;
+        setTimeout(() => activeUnderlineEl.classList.add('is--active'), 200);
+      }
+
+      allLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          const linkWidth = link.offsetWidth;
+          const linkLeftOffset = link.offsetLeft;
+          const linkCenter = linkLeftOffset + linkWidth / 2;
+          activeLineLeft = linkCenter - activeUnderlineEl.offsetWidth / 2;
+          activeUnderlineEl.style.left = `${activeLineLeft}px`;
+          setTimeout(() => activeUnderlineEl.classList.add('is--active'), 200);
+        });
+      });
+    }
+  });
+</script>
+
+<!-- With horizontal scroll on mobile -->
+<style>
+  /* scrollbar */
+  .tabs__menu::-webkit-scrollbar {
+    height: 0px;
+  }
+</style>
+
+<script>
+  window.addEventListener('load', () => {
+    const activeUnderlineSelector = '.tabs__line';
+    const allLinksSelector = '.tabs__link';
+
+    const activeUnderlineEl = document.querySelector(activeUnderlineSelector);
+    const currentLink = document.querySelector(`${allLinksSelector}.w--current`);
+    const allLinks = document.querySelectorAll(allLinksSelector);
+    const tabsBorder = document.querySelector('.tabs__underline');
+
+    let activeLineLeft = 0;
+
+    if (activeUnderlineEl && allLinks.length) {
+      const updateUnderline = (element) => {
+        const elementWidth = element.offsetWidth;
+        const elementLeftOffset = element.offsetLeft;
+        const elementCenter = elementLeftOffset + elementWidth / 2;
+        activeLineLeft = elementCenter - elementWidth / 2;
+
+        activeUnderlineEl.style.left = `${activeLineLeft}px`;
+        activeUnderlineEl.style.width = `${elementWidth}px`;
+
+        // Also update the bottom border on mobile
+        if (window.innerWidth > 767) return;
+        const tabsMenu = document.querySelector('.tabs__menu');
+        if (!tabsMenu || !tabsBorder) return;
+        const computedStyle = window.getComputedStyle(tabsMenu);
+        const paddingLeft = parseFloat(computedStyle.getPropertyValue('padding-left'));
+        const paddingRight = parseFloat(computedStyle.getPropertyValue('padding-right'));
+        const gap = parseFloat(computedStyle.getPropertyValue('gap'));
+        const numberOfItems = allLinks.length;
+        const numberOfGaps = numberOfItems > 1 ? numberOfItems - 1 : 0;
+
+        let linkWidth = 0;
+        allLinks.forEach((link) => (linkWidth += link.offsetWidth));
+        console.log(paddingLeft, paddingRight, gap, numberOfGaps, linkWidth);
+        tabsBorder.style.width = `${linkWidth + paddingLeft + paddingRight + gap * numberOfGaps}px`;
+      };
+
+      if (currentLink) {
+        updateUnderline(currentLink);
+      }
+
+      allLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          updateUnderline(link);
+        });
+      });
+    }
+  });
+</script>
