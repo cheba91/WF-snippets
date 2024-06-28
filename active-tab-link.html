@@ -40,7 +40,6 @@
     height: 0px;
   }
 </style>
-
 <script>
   window.addEventListener('load', () => {
     const activeUnderlineSelector = '.tabs__line';
@@ -54,6 +53,7 @@
     let activeLineLeft = 0;
 
     if (activeUnderlineEl && allLinks.length) {
+      // Update active underline
       const updateUnderline = (element) => {
         const elementWidth = element.offsetWidth;
         const elementLeftOffset = element.offsetLeft;
@@ -62,8 +62,10 @@
 
         activeUnderlineEl.style.left = `${activeLineLeft}px`;
         activeUnderlineEl.style.width = `${elementWidth}px`;
+      };
 
-        // Also update the bottom border on mobile
+      // Update bottom border
+      const updateBottomBorder = () => {
         if (window.innerWidth > 767) return;
         const tabsMenu = document.querySelector('.tabs__menu');
         if (!tabsMenu || !tabsBorder) return;
@@ -77,17 +79,20 @@
         let linkWidth = 0;
         allLinks.forEach((link) => (linkWidth += link.offsetWidth));
         console.log(paddingLeft, paddingRight, gap, numberOfGaps, linkWidth);
-        tabsBorder.style.width = `${linkWidth + paddingLeft + paddingRight + gap * numberOfGaps}px`;
+        // Update only if wider than tabs menu
+        const totalWidth = linkWidth + paddingLeft + paddingRight + gap * numberOfGaps;
+        if (totalWidth < tabsMenu.offsetWidth) return;
+        tabsBorder.style.minWidth = `${linkWidth + paddingLeft + paddingRight + gap * numberOfGaps}px`;
       };
 
       if (currentLink) {
         updateUnderline(currentLink);
+        updateBottomBorder();
       }
+      window.addEventListener('resize', updateBottomBorder);
 
       allLinks.forEach((link) => {
-        link.addEventListener('click', () => {
-          updateUnderline(link);
-        });
+        link.addEventListener('click', () => updateUnderline(link));
       });
     }
   });
