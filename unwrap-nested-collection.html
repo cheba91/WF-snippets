@@ -13,3 +13,24 @@
     observer.observe(el, { childList: true });
   });
 </script>
+
+<!-- Unwrap and add commas -->
+<style>
+#categories .body-s::after {
+  content: ',';
+  display: inline-block;
+  margin-right: 0.3em;
+}
+#categories .body-s:last-child::after {
+  content: '';
+}
+</style>
+<script>
+  window.addEventListener('load', () => {
+    [
+      document.querySelector('.coll-wrap'),
+      document.querySelector('.coll'),
+      document.querySelector('.coll__item'),
+    ].forEach((el) => el.replaceWith(...el.childNodes));
+  });
+</script>
