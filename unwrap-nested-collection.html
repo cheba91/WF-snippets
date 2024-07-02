@@ -16,21 +16,22 @@
 
 <!-- Unwrap and add commas -->
 <style>
-#categories .body-s::after {
-  content: ',';
-  display: inline-block;
-  margin-right: 0.3em;
-}
-#categories .body-s:last-child::after {
-  content: '';
-}
+  .categories .body-s.is--link::after {
+    content: ',';
+    display: inline-block;
+    margin-right: 0.3em;
+  }
+  .categories .body-s.is--link:last-child::after {
+    content: '';
+  }
 </style>
 <script>
   window.addEventListener('load', () => {
-    [
-      document.querySelector('.coll-wrap'),
-      document.querySelector('.coll'),
-      document.querySelector('.coll__item'),
-    ].forEach((el) => el.replaceWith(...el.childNodes));
+    const cmsColl = document.querySelector('.coll-wrap');
+    const cmsItems = cmsColl.querySelectorAll('.coll__item');
+    
+    if (!cmsItems.length) cmsColl.remove();
+    else [cmsColl, cmsColl.querySelector("[role='list']"), ...cmsItems].forEach((el) => el.replaceWith(...el.childNodes));
   });
 </script>
+
