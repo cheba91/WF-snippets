@@ -97,3 +97,68 @@
     }
   });
 </script>
+<!-- Multiple tabs with horizontal scroll on mobile -->
+<style>
+  /* scrollbar */
+  .tabs__menu::-webkit-scrollbar {
+    height: 0px;
+  }
+</style>
+
+<script>
+  let activeLineLeft = {};
+  // Update active underline
+  const updateUnderline = (currentLink, activeUnderlineEl, i) => {
+    const elementWidth = currentLink.offsetWidth;
+    const elementLeftOffset = currentLink.offsetLeft;
+    const elementCenter = elementLeftOffset + elementWidth / 2;
+    activeLineLeft[i] = elementCenter - elementWidth / 2;
+
+    activeUnderlineEl.style.left = `${activeLineLeft[i]}px`;
+    activeUnderlineEl.style.width = `${elementWidth}px`;
+  };
+
+  // Update bottom border
+  const updateBottomBorder = (tabEl, tabsBorder, allLinks) => {
+    if (window.innerWidth > 767) return;
+    const tabsMenu = tabEl.querySelector('.tabs__menu');
+    if (!tabsMenu || !tabsBorder) return;
+    // console.log('updateBottomBorder', tabsMenu, tabsBorder);
+    const computedStyle = window.getComputedStyle(tabsMenu);
+    const paddingLeft = parseFloat(computedStyle.getPropertyValue('padding-left'));
+    const paddingRight = parseFloat(computedStyle.getPropertyValue('padding-right'));
+    const gap = parseFloat(computedStyle.getPropertyValue('gap'));
+    const numberOfItems = allLinks.length;
+    const numberOfGaps = numberOfItems > 1 ? numberOfItems - 1 : 0;
+
+    let linkWidth = 0;
+    allLinks.forEach((link) => (linkWidth += link.offsetWidth));
+    // Update only if wider than tabs menu
+    const totalWidth = linkWidth + paddingLeft + paddingRight + gap * numberOfGaps;
+    console.log('updateBottomBorder', paddingLeft, paddingRight, gap, numberOfGaps, linkWidth, totalWidth);
+    if (totalWidth < tabsMenu.offsetWidth) return;
+    tabsBorder.style.minWidth = `${linkWidth + paddingLeft + paddingRight + gap * numberOfGaps}px`;
+  };
+
+   window.addEventListener('load', () => {
+  document.querySelectorAll('.tabs').forEach((tabEl, i) => {
+    activeLineLeft[i] = 0;
+
+    const activeUnderlineEl = tabEl?.querySelector('.tabs__line');
+    const currentLink = tabEl?.querySelector('.tabs__link.w--current');
+    const allLinks = tabEl?.querySelectorAll('.tabs__link');
+    const tabsBorder = tabEl?.querySelector('.tabs__underline');
+
+    if (currentLink && allLinks.length) {
+      if (activeUnderlineEl) {
+        updateUnderline(currentLink, activeUnderlineEl, i);
+        allLinks.forEach((link) => link.addEventListener('click', () => updateUnderline(link, activeUnderlineEl, i)));
+      }
+      if (tabsBorder) {
+        updateBottomBorder(tabEl, tabsBorder, allLinks);
+        window.addEventListener('resize', () => updateBottomBorder(tabEl, tabsBorder, allLinks));
+      }
+    }
+  });
+  });
+</script>
