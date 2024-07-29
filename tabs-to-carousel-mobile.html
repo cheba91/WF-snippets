@@ -1,0 +1,58 @@
+<style>
+  .tabs-menu::-webkit-scrollbar {
+    height: 10px;
+    border-radius: 16px;
+  }
+  .tabs-menu::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 16px;
+  }
+  .tabs-menu::-webkit-scrollbar-thumb {
+    background: #a2a4a6;
+    border-radius: 16px;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // is touch device
+    if ('ontouchstart' in window) {
+      const tabs = document.querySelectorAll('.w-tabs');
+      tabs.forEach((tabs) => {
+        const tabsContent = tabs.querySelector('.w-tab-content');
+        let startX = 0;
+        let endX = 0;
+
+        tabsContent.addEventListener('touchstart', (e) => {
+          startX = e.changedTouches[0].screenX;
+        });
+
+        tabsContent.addEventListener('touchend', (e) => {
+          endX = e.changedTouches[0].screenX;
+          handleGesture();
+        });
+
+        const handleGesture = () => {
+          if (startX - endX > 50) switchTab('next');
+          else if (endX - startX > 50) switchTab('prev');
+        };
+
+        const switchTab = (direction) => {
+          console.log('switchTab', direction);
+          const currentTab = tabs.querySelector('.tab-link.w--current');
+          if (!currentTab) return;
+          // Go next
+          if (direction === 'next') {
+            const nextTab = currentTab.nextElementSibling;
+            if (nextTab) nextTab.click();
+            else tabs.querySelector('.tab-link').click();
+          } else if (direction === 'prev') {
+            // Go prev
+            const prevTab = currentTab.previousElementSibling;
+            if (prevTab) prevTab.click();
+            else tabs.querySelector('.tab-link:last-child').click();
+          }
+        };
+      });
+    }
+  });
+</script>
