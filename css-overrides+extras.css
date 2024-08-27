@@ -45,3 +45,7 @@ body {
     -webkit-mask-composite: xor;
      pointer-events:none;
   }
+/* Fluid font size with REMs, from  https://finsweet.com/client-first/docs/fluid-responsive*/
+  html { font-size: calc(0.35344827586206906rem + 0.5387931034482758vw); }
+  @media screen and (max-width:1920px) { html { font-size: calc(0.35344827586206895rem + 0.5387931034482759vw); } }
+  @media screen and (max-width:992px) { html { font-size: 1rem; } }
