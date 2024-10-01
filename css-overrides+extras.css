@@ -49,3 +49,11 @@ body {
   html { font-size: calc(0.35344827586206906rem + 0.5387931034482758vw); }
   @media screen and (max-width:1920px) { html { font-size: calc(0.35344827586206895rem + 0.5387931034482759vw); } }
   @media screen and (max-width:992px) { html { font-size: 1rem; } }
+
+/* Prevent autofill coloring */
+ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+    background-color: white !important;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+    -webkit-text-fill-color: white !important;
+}
