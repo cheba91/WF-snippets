@@ -57,3 +57,13 @@ body {
     transition: background-color 5000s ease-in-out 0s !important;
     -webkit-text-fill-color: white !important;
 }
+
+/* Labels move up on focus */
+  .form-input-field:not(:placeholder-shown) ~ .form-input-label,
+  .form-input-field:focus ~ .form-input-label {
+    transform: scale(0.8);
+    top: -4px;
+  }
+  .form-input-field:focus ~ .form-input-label {
+    color: #005fee;
+  }
