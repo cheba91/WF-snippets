@@ -80,3 +80,69 @@
     //------------------------------------------------------
   });
 </script>
+
+<style>
+    .tabs__menu__link .tabs__menu__link__underline {
+      transition: left 0ms linear;
+    }
+    .tabs__menu__link.w--current .tabs__menu__link__underline {
+      left: 0%;
+      transition: left 8000ms linear;
+    }
+</style>
+<script>
+    /*
+    With horizontal progress bar + reset loop
+        Set initial tab to "none"
+        set tab IDs to "tab-0" and "tab-1"...
+        1304 + 32 + 32 = 1368
+        1612 + 32 + 32 = 1676
+    */
+    window.addEventListener('load', () => {
+      //------------------------------------------------------
+      const transitionSpeed = 8000;
+      const tabsWrap = document.querySelector('.tabs.w-tabs');
+      const tabs = document.querySelectorAll('.tabs__menu .tabs__menu__link');
+      let currentTab = 0;
+      let intervalId;
+  
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', (e) => {
+          currentTab = Number(tab.id.split('-')[1]);
+          tab.classList.remove('w--current');
+          setTimeout(() => tab.classList.add('w--current'), 10);
+          clearInterval(intervalId);
+          clickTabsOneByOne();
+          console.log('tab clicked', currentTab, tab.id.split('-')[1]);
+        });
+      });
+  
+      const handleIntersection = (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const intersectionRatio = entry.intersectionRatio;
+            if (intersectionRatio >= 0.4) {
+              tabs[currentTab].click();
+              console.log('Intersecting, start looping');
+              observer.disconnect();
+            }
+          }
+        });
+      };
+  
+      const observer = new IntersectionObserver(handleIntersection, {
+        threshold: 0.4,
+      });
+      observer.observe(tabsWrap);
+  
+      const clickTabsOneByOne = () => {
+        intervalId = setInterval(() => {
+          const nextTab = (currentTab + 1) % tabs.length;
+          tabs[nextTab].click();
+          currentTab = nextTab;
+        }, transitionSpeed);
+      };
+      //------------------------------------------------------
+    });
+</script>
+
