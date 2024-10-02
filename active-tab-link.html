@@ -162,3 +162,34 @@
   });
   });
 </script>
+
+<!-- Vertical underline -->
+<script>
+let activeLineTop = {};
+
+const updateUnderline = (currentLink, activeUnderlineEl, i) => {
+  const elementHeight = currentLink.offsetHeight;
+  const elementTopOffset = currentLink.offsetTop;
+
+  const underlineHeight = activeUnderlineEl.offsetHeight;
+  const verticalOffset = (elementHeight - underlineHeight) / 2;
+
+  activeLineTop[i] = elementTopOffset + verticalOffset;
+  activeUnderlineEl.style.top = `${activeLineTop[i]}px`;
+};
+
+document.querySelectorAll('.v-tabs').forEach((tabEl, i) => {
+  activeLineTop[i] = 0;
+
+  const activeUnderlineEl = tabEl?.querySelector('.v-tabs__line');
+  const currentLink = tabEl?.querySelector('.v-tabs__menu__link.w--current');
+  const allLinks = tabEl?.querySelectorAll('.v-tabs__menu__link');
+
+  if (currentLink && allLinks.length) {
+    if (activeUnderlineEl) {
+      updateUnderline(currentLink, activeUnderlineEl, i);
+      allLinks.forEach((link) => link.addEventListener('click', () => updateUnderline(link, activeUnderlineEl, i)));
+    }
+  }
+});
+</script>
