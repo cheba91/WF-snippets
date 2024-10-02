@@ -165,6 +165,7 @@
 
 <!-- Vertical underline -->
 <script>
+// Active underline
 let activeLineTop = {};
 
 const updateUnderline = (currentLink, activeUnderlineEl, i) => {
@@ -188,7 +189,7 @@ document.querySelectorAll('.v-tabs').forEach((tabEl, i) => {
   if (currentLink && allLinks.length) {
     if (activeUnderlineEl) {
       updateUnderline(currentLink, activeUnderlineEl, i);
-      allLinks.forEach((link) => link.addEventListener('click', () => updateUnderline(link, activeUnderlineEl, i)));
+      allLinks.forEach((link) => link.addEventListener('click', () => setTimeout(() => updateUnderline(link, activeUnderlineEl, i), 50)));
     }
   }
 });
