@@ -1,0 +1,82 @@
+<style>
+  @media (max-width: 767px) {
+    .v-tabs__content__pane__inner {
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+    .v-tabs__content__pane__inner.hide {
+      display: none;
+    }
+    .v-tabs__content__pane__inner.fade-in {
+      opacity: 1;
+    }
+  }
+</style>
+<script>
+  // Display tab content on mobile under corresponding links
+  const tabPaneContents = document.querySelectorAll('.v-tabs__content__pane__inner');
+  const tabPaneContentsWraps = document.querySelectorAll('.v-tabs__content__pane');
+  const tabLinks = document.querySelectorAll('.v-tabs__menu__link');
+  let windowWidth = window.innerWidth;
+  let areInCorrectPlace = false;
+
+  const handleTabs = () => {
+    // Check if window width requires mobile layout
+    const isMobileView = windowWidth < 768;
+
+    if ((isMobileView && areInCorrectPlace) || (!isMobileView && !areInCorrectPlace)) return;
+
+    if (isMobileView) {
+      // Move all pane contents under links
+      tabPaneContents.forEach((content, i) => {
+        const correspondingLink = tabLinks[i];
+        // Display only the active one
+        if (correspondingLink.classList.contains('w--current')) {
+          content.classList.remove('hide');
+          content.classList.add('fade-in');
+        } else {
+          content.classList.add('hide');
+          content.classList.remove('fade-in');
+        }
+
+        console.log(correspondingLink, correspondingLink.classList.contains('w--current'));
+        correspondingLink.insertAdjacentElement('afterend', content);
+      });
+
+      // Add click listeners to links
+      tabLinks.forEach((link, i) => {
+        const correspondingContent = tabPaneContents[i];
+        link.addEventListener('click', () => {
+          // Hide all content
+          tabPaneContents.forEach((content) => {
+            content.classList.add('hide');
+            content.classList.remove('fade-in');
+          });
+          // Show only the active one
+          correspondingContent.classList.remove('hide');
+          setTimeout(() => correspondingContent.classList.add('fade-in'), 20);
+        });
+      });
+
+      areInCorrectPlace = true;
+    } else {
+      // Move tab content back to original place and clean up
+      tabPaneContents.forEach((content, i) => {
+        content.classList.remove('hide');
+        content.classList.remove('fade-in');
+        tabPaneContentsWraps[i].insertAdjacentElement('beforeend', content);
+      });
+
+      areInCorrectPlace = false;
+    }
+  };
+
+  // Initial setup
+  handleTabs();
+
+  // Add resize event listener
+  window.addEventListener('resize', () => {
+    windowWidth = window.innerWidth;
+    handleTabs();
+  });
+</script>
