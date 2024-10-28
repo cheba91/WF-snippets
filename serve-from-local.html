@@ -1,0 +1,11 @@
+<!-- https://www.npmjs.com/package/http-server -->
+<script src="http://127.0.0.1:8080/script.js" />
+<script>
+  (function addStyle() {
+  const style = document.createElement("link");
+  style.setAttribute("rel", "stylesheet");
+  style.setAttribute("href", "http://127.0.0.1:8080/style.css");
+  console.log("append");
+  document.head.append(style);
+})();
+</script>
