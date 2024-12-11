@@ -1,0 +1,23 @@
+<style>
+  .slider-track-inner-2 .slider-track-list {
+    -webkit-animation: slideLoop 8s linear infinite;
+    -moz-animation: slideLoop 8s linear infinite;
+    animation: slideLoop 8s linear infinite;
+    -webkit-transform: translateX(0) translateZ(0);
+    -moz-transform: translateX(0) translateZ(0);
+    transform: translateX(0) translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  @keyframes slideLoop {
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .slider-track-inner-2:hover .slider-track-list {
+    animation-play-state: paused;
+  }
+</style>
