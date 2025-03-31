@@ -1,0 +1,63 @@
+<script>
+  const originalArticleDate =
+    '{{wf {&quot;path&quot;:&quot;date&quot;,&quot;transformers&quot;:[{&quot;name&quot;:&quot;date&quot;,&quot;arguments&quot;:[&quot;MMM DD, YYYY&quot;]\}],&quot;type&quot;:&quot;Date&quot;\} }}';
+  const originalArticleSlug = '{{wf {&quot;path&quot;:&quot;slug&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}';
+
+  // Wait for Finsweet "load more" to load
+  window.fsAttributes = window.fsAttributes || [];
+  window.fsAttributes.push([
+    'cmsload',
+    (listInstances) => {
+      const relatedArticlesWrap = document.querySelector('#related-articles-wrap');
+      const articles = document.querySelectorAll('.related-articles .related-articles__item');
+      const originalArticleDateObj = new Date(originalArticleDate);
+
+      // Filter out the current article and sort all others by date
+      const otherArticles = Array.from(articles).filter((article) => {
+        // Exclude the current article by slug
+        return article.getAttribute('article-slug') !== originalArticleSlug;
+      });
+
+      // Sort articles by date (most recent first)
+      otherArticles.sort((a, b) => {
+        const dateA = new Date(a.getAttribute('article-date')).getTime();
+        const dateB = new Date(b.getAttribute('article-date')).getTime();
+        return dateB - dateA; // Descending order (newest first)
+      });
+
+      // Get all articles with the same date as current article
+      const sameDate = otherArticles.filter((article) => {
+        const articleDate = new Date(article.getAttribute('article-date')).getTime();
+        const originalDate = originalArticleDateObj.getTime();
+        // Get date without time
+        const articleDay = new Date(articleDate).setHours(0, 0, 0, 0);
+        const originalDay = new Date(originalDate).setHours(0, 0, 0, 0);
+        return articleDay === originalDay;
+      });
+
+      // Get all articles with earlier dates
+      const earlierDates = otherArticles.filter((article) => {
+        const articleDate = new Date(article.getAttribute('article-date')).getTime();
+        const originalDate = originalArticleDateObj.getTime();
+        // Get date without time
+        const articleDay = new Date(articleDate).setHours(0, 0, 0, 0);
+        const originalDay = new Date(originalDate).setHours(0, 0, 0, 0);
+        return articleDay < originalDay;
+      });
+
+      // Combine and keep the 3 most recent
+      const articlesToKeep = [...sameDate, ...earlierDates].slice(0, 3);
+      const articlesToKeepIds = articlesToKeep.map((article) => article.getAttribute('article-slug'));
+
+      // Remove all articles except the ones we want to keep
+      articles.forEach((article) => {
+        if (!articlesToKeepIds.includes(article.getAttribute('article-slug'))) {
+          article.remove();
+        }
+      });
+
+      // Display the wrap if there are articles to show
+      if (articlesToKeep.length > 0) relatedArticlesWrap.classList.remove('hidden');
+    },
+  ]);
+</script>
