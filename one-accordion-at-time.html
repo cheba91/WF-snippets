@@ -30,3 +30,29 @@
     });
   });
 </script>
+<script>
+  // V3 - Only one accordion open at a time with WF animations
+  window.addEventListener('load', () => {
+    const accordionWrapSelector = '.faqs_wrap';
+    const accordionTriggerSelector = '.faq_icon-wrap';
+    const activeClass = 'is--active';
+    const allAccordions = document.querySelectorAll(`${accordionWrapSelector} ${accordionTriggerSelector}`);
+
+    allAccordions.forEach((accordionHead) => {
+      accordionHead.addEventListener('click', (e) => {
+        if (!e.isTrusted) return;
+        const isAlreadyActive = accordionHead.classList.contains(activeClass);
+
+        allAccordions.forEach((head) => {
+          if (head !== accordionHead && head.classList.contains(activeClass)) {
+            head.classList.remove(activeClass);
+            head.click();
+          }
+        });
+
+        if (!isAlreadyActive) accordionHead.classList.add(activeClass);
+        else accordionHead.classList.remove(activeClass);
+      });
+    });
+  });
+</script>
