@@ -1,0 +1,19 @@
+<script>
+addEventListener('DOMContentLoaded', () => $('#some-form').submit(() => false));
+
+$(".w-dropdown").trigger("w-close");
+</script>
+
+<!-- Display the optional section only if there are CMS items present -->
+<style>
+  [data-visibility='optional'] {
+    display: none;
+  }
+</style>
+<script>
+  window.addEventListener('load', () => {
+    const section = document.querySelector('[data-visibility="optional"]');
+    const cmsItems = section.querySelectorAll('[role="list"] [role="listitem"]');
+    if (cmsItems.length > 0) section.style.display = 'block';
+  });
+</script>
