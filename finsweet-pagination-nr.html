@@ -24,6 +24,11 @@
           () => listInstances[0].currentPage.value,
           (newPage) => updatePaginationText(newPage, totalPages)
         );
+        // Update the pagination text when total pages change
+        listInstances[0].watch(
+          () => listInstances[0].totalPages.value,
+          (newTotalPages) => updatePaginationText(currPage, newTotalPages)
+        );
       },
     ]);
   });
