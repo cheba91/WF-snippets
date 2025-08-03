@@ -1,0 +1,30 @@
+<style>
+  .pagination__page-count {
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
+</style>
+<script>
+  window.addEventListener('load', () => {
+    const paginationElement = document.querySelector('.pagination__page-count');
+    if (!paginationElement) return;
+
+    const updatePaginationText = (currPage, totalPages) => (paginationElement.textContent = `Page ${currPage} of ${totalPages}`);
+
+    window.FinsweetAttributes ||= [];
+    window.FinsweetAttributes.push([
+      'list',
+      (listInstances) => {
+        const currPage = listInstances[0].currentPage.value;
+        const totalPages = listInstances[0].totalPages.value;
+        updatePaginationText(currPage, totalPages);
+        paginationElement.style.opacity = '1';
+        // On page change, update the pagination text
+        listInstances[0].watch(
+          () => listInstances[0].currentPage.value,
+          (newPage) => updatePaginationText(newPage, totalPages)
+        );
+      },
+    ]);
+  });
+</script>
