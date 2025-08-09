@@ -7,29 +7,17 @@
 <script>
   window.addEventListener('load', () => {
     const paginationElement = document.querySelector('.pagination__page-count');
-    if (!paginationElement) return;
+    if (paginationElement) {
+      const setPaginationText = () => {
+        const currPage = paginationElement.getAttribute('aria-label')?.match(/Page (\d+) of (\d+)/);
+        if (currPage) paginationElement.textContent = `Page ${currPage[1]} of ${currPage[2]}`;
+      };
 
-    const updatePaginationText = (currPage, totalPages) => (paginationElement.textContent = `Page ${currPage} of ${totalPages}`);
-
-    window.FinsweetAttributes ||= [];
-    window.FinsweetAttributes.push([
-      'list',
-      (listInstances) => {
-        const currPage = listInstances[0].currentPage.value;
-        const totalPages = listInstances[0].totalPages.value;
-        updatePaginationText(currPage, totalPages);
-        paginationElement.style.opacity = '1';
-        // On page change, update the pagination text
-        listInstances[0].watch(
-          () => listInstances[0].currentPage.value,
-          (newPage) => updatePaginationText(newPage, totalPages)
-        );
-        // Update the pagination text when total pages change
-        listInstances[0].watch(
-          () => listInstances[0].totalPages.value,
-          (newTotalPages) => updatePaginationText(currPage, newTotalPages)
-        );
-      },
-    ]);
+      //  Observe aria-label change
+      const observer = new MutationObserver(setPaginationText);
+      observer.observe(paginationElement, { attributes: true });
+      setPaginationText();
+      paginationElement.style.opacity = '1';
+    }
   });
 </script>
