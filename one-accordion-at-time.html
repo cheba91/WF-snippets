@@ -56,3 +56,72 @@
     });
   });
 </script>
+<!-- With custom JS animation -->
+<style>
+.faqs .faq__left__a {
+  height: 0px;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Only one open at a time
+  const accordionWrapSelector = '.faqs';
+  const accordionTriggerSelector = '.faq__left__q';
+  const accordionSelector = '.faq';
+  const contentSelector = '.faq__left__a';
+  const arrowSelector = '.faq__right';
+  const activeClass = 'is--active';
+  const accordionHeads = document.querySelectorAll(`${accordionWrapSelector} ${accordionTriggerSelector}`);
+
+  accordionHeads.forEach((accordionHead) => {
+    const content = accordionHead.parentElement.querySelector(contentSelector);
+    const arrow = accordionHead.closest(accordionSelector).querySelector(arrowSelector);
+    console.log(arrow);
+
+    accordionHead.addEventListener('click', (e) => {
+      const isActive = accordionHead.classList.contains(activeClass);
+
+      accordionHeads.forEach((head) => {
+        if (head !== accordionHead && head.classList.contains(activeClass)) {
+          head.classList.remove(activeClass);
+          const activeContent = head.parentElement.querySelector(contentSelector);
+          activeContent.style.height = activeContent.scrollHeight + 'px';
+          requestAnimationFrame(() => {
+            activeContent.style.height = '0px';
+          });
+        }
+      });
+
+      if (!isActive) {
+        accordionHead.classList.add(activeClass);
+        content.style.height = content.scrollHeight + 'px';
+        content.addEventListener('transitionend', function handler() {
+          if (accordionHead.classList.contains(activeClass)) {
+            content.style.height = 'auto';
+          }
+          content.removeEventListener('transitionend', handler);
+        });
+      } else {
+        accordionHead.classList.remove(activeClass);
+        content.style.height = content.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+          content.style.height = '0px';
+        });
+      }
+    });
+
+    // Trigger also on arrow click
+    arrow?.addEventListener('click', (e) => {
+      accordionHead.click();
+    });
+  });
+
+  // Open initial FAQ
+  const initiallyOpenFaq = document.querySelector('.faqs [is-initially-open="true"]');
+  if (initiallyOpenFaq) {
+    const trigger = initiallyOpenFaq.querySelector('.faq__left__q');
+    trigger.click();
+  }
+});
+
+</script>
