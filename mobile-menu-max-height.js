@@ -1,10 +1,30 @@
-// Display as normal dropdown, but limit it's height to bottom of the screen. Offsets mobile URL bar
+
   document.addEventListener('DOMContentLoaded', () => {
-    if (window.innerWidth < 992) {
-      const nav = document.querySelector('.nav');
-      const navMenu = document.querySelector('.nav__menu');
-      const setMaxHeight = () => nav && navMenu && (navMenu.style.maxHeight = `${window.innerHeight - nav.offsetHeight}px`);
-      setMaxHeight();
-      window.addEventListener('resize', setMaxHeight);
+    // Mobile menu height. Offsets mobile URL bar
+    const nav = document.querySelector('.navigation');
+    const navMenu = document.querySelector('.navigation .navigation__menu');
+
+    const updateMaxHeight = () => {
+      if (!nav || !navMenu) return;
+      if (window.innerWidth < 992) {
+        navMenu.style.maxHeight = `${window.innerHeight - nav.offsetHeight}px`;
+      } else {
+        navMenu.style.maxHeight = '';
+      }
+    };
+
+    updateMaxHeight();
+    window.addEventListener('resize', updateMaxHeight);
+
+    // Scrolled state
+    const navigation = document.querySelector('.navigation');
+    if (navigation) {
+      window.addEventListener(
+        'scroll',
+        () => {
+          navigation.classList.toggle('is--scrolled', window.scrollY >= 30);
+        },
+        { passive: true },
+      );
     }
   });
