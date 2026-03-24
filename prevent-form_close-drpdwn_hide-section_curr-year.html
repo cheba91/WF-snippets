@@ -17,9 +17,9 @@ $(".w-dropdown").trigger("w-close");
     if (cmsItems.length > 0) section.style.display = 'block';
   });
 </script>
- <!-- Set the current year to all elements with the attribute set-year=true -->
+ <!-- Set the current year to all elements with the attribute current-year -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('[set-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
+    document.querySelectorAll('[current-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
   });
 </script>
