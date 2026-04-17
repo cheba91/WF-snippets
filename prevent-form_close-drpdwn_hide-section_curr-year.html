@@ -10,6 +10,13 @@ $(".w-dropdown").trigger("w-close");
     display: none;
   }
 </style>
+<!-- Overlay for scrolling logos -->
+<style>
+.logo-band {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+</style>
 <script>
   window.addEventListener('load', () => {
     const section = document.querySelector('[data-visibility="optional"]');
