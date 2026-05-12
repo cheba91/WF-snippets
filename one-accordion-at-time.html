@@ -125,3 +125,37 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+<script>
+  // Only one accordion open at a time with WF animations — per group
+  if (!window.__faqAccordionInit) {
+    window.__faqAccordionInit = true;
+
+    window.addEventListener('load', () => {
+      const accordionWrapSelector = '.faqs';
+      const accordionTriggerSelector = '.accordion__head';
+      const activeClass = 'is--active';
+
+      document.querySelectorAll(accordionWrapSelector).forEach((group) => {
+        const triggers = group.querySelectorAll(accordionTriggerSelector);
+
+        triggers.forEach((accordionHead) => {
+          accordionHead.addEventListener('click', (e) => {
+            if (!e.isTrusted) return;
+            const isAlreadyActive = accordionHead.classList.contains(activeClass);
+
+            triggers.forEach((head) => {
+              if (head !== accordionHead && head.classList.contains(activeClass)) {
+                head.classList.remove(activeClass);
+                head.click();
+              }
+            });
+
+            if (!isAlreadyActive) accordionHead.classList.add(activeClass);
+            else accordionHead.classList.remove(activeClass);
+          });
+        });
+      });
+    });
+  }
+</script>
